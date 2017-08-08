@@ -41,7 +41,13 @@ The following steps will inform the code you write and help you make good pull r
 
 > Read this to learn how to get the  project running on your local computer
 
-Instructions forthcoming... 🤔
+1. Install [golang](https://golang.org/doc/install) on your computer
+2. Fork this repo
+3. Clone your fork to your GOPATH (for example mine is, ~/Development/go/src/github.com/teesloane/beacon)
+  1. Yours might be something like `~/go/src/github.com/{yourGithubUserName}/beacon`
+4. Try running Beacon: 
+  1. Navigate to the beacon folder in your terminal
+  2. type: `Run main.go`
 
 # Terminology
 
