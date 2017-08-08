@@ -16,6 +16,16 @@
         "code",
         "review"
       ]
+    },
+    {
+      "login": "mihok",
+      "name": "Matthew Mihok",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/563301?v=4",
+      "profile": "http://mihok.today",
+      "contributions": [
+        "question",
+        "review"
+      ]
     }
   ]
 }
