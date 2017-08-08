@@ -1,0 +1,21 @@
+{
+  "projectName": "Beacon",
+  "projectOwner": "teesloane",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 80,
+  "commit": true,
+  "contributors": [
+    {
+      "login": "broneks",
+      "name": "Bronek Szulc",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/4494382?v=4",
+      "profile": "https://github.com/broneks",
+      "contributions": [
+        "code",
+        "review"
+      ]
+    }
+  ]
+}
