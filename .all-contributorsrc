@@ -1,0 +1,43 @@
+{
+  "projectName": "Beacon",
+  "projectOwner": "teesloane",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 80,
+  "commit": true,
+  "contributors": [
+    {
+      "login": "broneks",
+      "name": "Bronek Szulc",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/4494382?v=4",
+      "profile": "https://github.com/broneks",
+      "contributions": [
+        "code",
+        "review"
+      ]
+    },
+    {
+      "login": "mihok",
+      "name": "Matthew Mihok",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/563301?v=4",
+      "profile": "http://mihok.today",
+      "contributions": [
+        "question",
+        "review"
+      ]
+    },
+    {
+      "login": "teesloane",
+      "name": "Tyler",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/12987958?v=4",
+      "profile": "http://tylersloane.com",
+      "contributions": [
+        "code",
+        "design",
+        "doc",
+        "eventOrganizing"
+      ]
+    }
+  ]
+}
