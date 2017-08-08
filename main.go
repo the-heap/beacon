@@ -53,12 +53,24 @@ var logFilePath = path.Join(os.Getenv("HOME"), "/Dropbox/The Heap/Beacon/beacon_
 var beaconLogData BeaconLog
 
 // ============================
-// Helpers
+// FUNCS
 // ============================
 
 func checkError(e error) {
 	if e != nil {
 		panic(e)
+	}
+}
+
+// Print the beacon log to the terminal
+func printLog(data BeaconLog) {
+	for _, element := range data.Logs {
+		fmt.Println("")
+		fmt.Println("==========================================")
+		fmt.Println("Date: ", element.Date)
+		fmt.Println("Author: ", element.Author+" ("+element.Email+")") // I bet there's a nicer way to do this.
+		fmt.Println("Message: ", element.Message)
+		fmt.Println("==========================================")
 	}
 }
 
@@ -77,6 +89,6 @@ func main() {
 		panic(err)
 	}
 
-	// an example of accessing some unmarshalled json data.
-	fmt.Println(beaconLogData.Logs[0].Message)
+	// Print the beacon log!
+	printLog(beaconLogData)
 }
