@@ -5,11 +5,11 @@
 * Please refer to our github issues page for working on this project! https://github.com/the-heap/beacon/issues
 *
 *** ======== Useful links, Resources, etc: ============ ***
-	* Join our Slack group: https://slackin-onxcmypksl.now.sh/ <-- might take bit of time load before you can register. ⏲
-	* Learn about the Heap: http://theheap.us/page/about/ 🎒
-	* Resources for contributing to open source with The Heap: https://theheap.us/page/resources/ 🎩
-	* Golang tips: https://gobyexample.com/ 🐹
-	* Podcast about Golang if you're interested: http://gotime.fm/ 🎧
+	* 🗯 Join our Slack group:							https://slackin-onxcmypksl.now.sh/
+	* 🎒 Learn about the Heap:						 	http://theheap.us/page/about/
+	* 🎩 New to Open source resoures:				https://theheap.us/page/resources/
+	* 🐹 Golang tips:									    	https://gobyexample.com/
+	* 🎧 Cool Golang podcast:								http://gotime.fm/
 *** =================================================== ***
 *
 */
