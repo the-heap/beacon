@@ -20,8 +20,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"os"
-	"path"
 )
 
 // ============================
@@ -49,7 +47,7 @@ type Log struct {
 // Vars and Constants
 // ============================
 
-var logFilePath = path.Join(os.Getenv("HOME"), "/Dropbox/The Heap/Beacon/beacon_log.json")
+// var logFilePath = path.Join(os.Getenv("HOME"), "/Dropbox/The Heap/Beacon/beacon_log.json")
 var beaconLogData BeaconLog
 
 // ============================
@@ -80,7 +78,8 @@ func printLog(data BeaconLog) {
 func main() {
 
 	// read JSON file from disk
-	beaconLogFile, err := ioutil.ReadFile(path.Join(logFilePath))
+	beaconLogFile, err := ioutil.ReadFile("./beacon_log.json")
+
 	checkError(err)
 
 	// unmarshal json and store it in the pointer to beaconLogData {?}
