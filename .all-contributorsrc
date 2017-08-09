@@ -38,6 +38,25 @@
         "doc",
         "eventOrganizing"
       ]
+    },
+    {
+      "login": "jbydeley",
+      "name": "Jared Bydeley",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/1454246?v=4",
+      "profile": "https://github.com/jbydeley",
+      "contributions": [
+        "review"
+      ]
+    },
+    {
+      "login": "benjmarshall",
+      "name": "Ben Marshall",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/6310728?v=4",
+      "profile": "http://benmarshall.co.uk",
+      "contributions": [
+        "code",
+        "review"
+      ]
     }
   ]
 }
