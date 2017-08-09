@@ -1,6 +1,6 @@
 ![](docs/assets/banner.jpg)
 
-[![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors)
+[![All Contributors](https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat-square)](#contributors)
 [![First-timers-only Friendly](https://img.shields.io/badge/first--timers--only-friendly-blue.svg)](http://www.firsttimersonly.com/)
 [![Twitter](https://img.shields.io/twitter/follow/theheap_.svg?style=social&label=Follow)](https://twitter.com/intent/follow?screen_name=theheap_)
 # Project Description
@@ -70,8 +70,8 @@ Breaking Change - This is a broad term. For the purpose of this project, a break
 Thanks goes to these wonderful people ([emoji key](https://github.com/kentcdodds/all-contributors#emoji-key)):
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-| [<img src="https://avatars2.githubusercontent.com/u/4494382?v=4" width="80px;"/><br /><sub>Bronek Szulc</sub>](https://github.com/broneks)<br />[💻](https://github.com/teesloane/Beacon/commits?author=broneks "Code") [👀](#review-broneks "Reviewed Pull Requests") | [<img src="https://avatars3.githubusercontent.com/u/563301?v=4" width="80px;"/><br /><sub>Matthew Mihok</sub>](http://mihok.today)<br />[💬](#question-mihok "Answering Questions") [👀](#review-mihok "Reviewed Pull Requests") | [<img src="https://avatars0.githubusercontent.com/u/12987958?v=4" width="80px;"/><br /><sub>Tyler</sub>](http://tylersloane.com)<br />[💻](https://github.com/teesloane/Beacon/commits?author=teesloane "Code") [🎨](#design-teesloane "Design") [📖](https://github.com/teesloane/Beacon/commits?author=teesloane "Documentation") [📋](#eventOrganizing-teesloane "Event Organizing") |
-| :---: | :---: | :---: |
+| [<img src="https://avatars2.githubusercontent.com/u/4494382?v=4" width="80px;"/><br /><sub>Bronek Szulc</sub>](https://github.com/broneks)<br />[💻](https://github.com/teesloane/Beacon/commits?author=broneks "Code") [👀](#review-broneks "Reviewed Pull Requests") | [<img src="https://avatars3.githubusercontent.com/u/563301?v=4" width="80px;"/><br /><sub>Matthew Mihok</sub>](http://mihok.today)<br />[💬](#question-mihok "Answering Questions") [👀](#review-mihok "Reviewed Pull Requests") | [<img src="https://avatars0.githubusercontent.com/u/12987958?v=4" width="80px;"/><br /><sub>Tyler</sub>](http://tylersloane.com)<br />[💻](https://github.com/teesloane/Beacon/commits?author=teesloane "Code") [🎨](#design-teesloane "Design") [📖](https://github.com/teesloane/Beacon/commits?author=teesloane "Documentation") [📋](#eventOrganizing-teesloane "Event Organizing") | [<img src="https://avatars3.githubusercontent.com/u/1454246?v=4" width="80px;"/><br /><sub>Jared Bydeley</sub>](https://github.com/jbydeley)<br />[👀](#review-jbydeley "Reviewed Pull Requests") | [<img src="https://avatars0.githubusercontent.com/u/6310728?v=4" width="80px;"/><br /><sub>Ben Marshall</sub>](http://benmarshall.co.uk)<br />[💻](https://github.com/teesloane/Beacon/commits?author=benjmarshall "Code") [👀](#review-benjmarshall "Reviewed Pull Requests") |
+| :---: | :---: | :---: | :---: | :---: |
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/kentcdodds/all-contributors) specification. Contributions of any kind welcome!

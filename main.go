@@ -47,7 +47,6 @@ type Log struct {
 // Vars and Constants
 // ============================
 
-// var logFilePath = path.Join(os.Getenv("HOME"), "/Dropbox/The Heap/Beacon/beacon_log.json")
 var beaconLogData BeaconLog
 
 // ============================
