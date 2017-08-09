@@ -48,7 +48,7 @@ The following steps will inform the code you write and help you make good pull r
   - Yours might be something like `~/go/src/github.com/{yourGithubUserName}/beacon`
 4. Try running Beacon: 
   - Navigate to the beacon folder in your terminal
-  - type: `Run main.go`
+  - type: `go run main.go`
 
 # Terminology
 
