@@ -44,6 +44,11 @@ type Log struct {
 	Message string
 }
 
+type beaconConfig struct {
+	Author string `json:"author"`
+	Email  string `json:"email"`
+}
+
 // ============================
 // Vars and Constants
 // ============================
@@ -105,9 +110,4 @@ func main() {
 
 	// Print the beacon log!
 	printLog(beaconLogData)
-}
-
-type beaconConfig struct {
-	Author string `json:"author"`
-	Email  string `json:"email"`
 }
