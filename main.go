@@ -17,10 +17,12 @@
 package main
 
 import (
+	"bufio"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"log"
+	"os"
 )
 
 // ============================
@@ -87,6 +89,14 @@ func loadConfig(config *beaconConfig) error {
 	return json.Unmarshal(configFile, &config)
 }
 
+func prompt(question string) string {
+	reader := bufio.NewReader(os.Stdin)
+	fmt.Print(question)
+	message, _ := reader.ReadString('\n')
+
+	return message
+}
+
 // ============================
 // MAIN!
 // ============================
@@ -95,6 +105,19 @@ func main() {
 
 	if err := loadConfig(&config); err != nil {
 		log.Fatal(err)
+	}
+	// parse command line arguments to determine action
+	if len(os.Args) == 2 {
+		switch os.Args[1] {
+		case "add":
+			log := Log{}
+			log.Author = prompt("Enter author: ")
+			log.Message = prompt("Enter message: ")
+
+			fmt.Printf("%+v\n", log)
+		default:
+			os.Exit(1)
+		}
 	}
 
 	// read JSON file from disk
@@ -109,5 +132,5 @@ func main() {
 	}
 
 	// Print the beacon log!
-	printLog(beaconLogData)
+	// printLog(beaconLogData)
 }
