@@ -52,12 +52,6 @@ type beaconConfig struct {
 }
 
 // ============================
-// Vars and Constants
-// ============================
-
-var beaconLogData BeaconLog
-
-// ============================
 // FUNCS
 // ============================
 
@@ -68,7 +62,9 @@ func checkError(e error) {
 }
 
 // Load the beacon log from file
-func loadLog() {
+func loadLog() BeaconLog {
+	beaconLogData := new(BeaconLog)
+
 	// read JSON file from disk
 	beaconLogFile, err := ioutil.ReadFile("./beacon_log.json")
 
@@ -79,6 +75,7 @@ func loadLog() {
 	if err := json.Unmarshal(beaconLogFile, &beaconLogData); err != nil {
 		panic(err)
 	}
+	return *beaconLogData
 }
 
 // Print the beacon log to the terminal
@@ -133,7 +130,7 @@ func main() {
 			fmt.Printf("%+v\n", log)
 			os.Exit(0)
 		case "all":
-			loadLog()
+			beaconLogData := loadLog()
 			printLog(beaconLogData)
 		default:
 			os.Exit(1)
