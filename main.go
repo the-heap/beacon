@@ -106,6 +106,7 @@ func main() {
 	if err := loadConfig(&config); err != nil {
 		log.Fatal(err)
 	}
+
 	// parse command line arguments to determine action
 	if len(os.Args) == 2 {
 		switch os.Args[1] {
@@ -115,6 +116,7 @@ func main() {
 			log.Message = prompt("Enter message: ")
 
 			fmt.Printf("%+v\n", log)
+			os.Exit(0)
 		default:
 			os.Exit(1)
 		}
@@ -132,5 +134,5 @@ func main() {
 	}
 
 	// Print the beacon log!
-	// printLog(beaconLogData)
+	printLog(beaconLogData)
 }
