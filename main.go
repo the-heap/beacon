@@ -108,13 +108,14 @@ func main() {
 	}
 
 	// parse command line arguments to determine action
+	// TODO: Log date and Log unique ID
+	// TODO: Switch from prompt to `beacon add "this is my breaking change message"`
 	if len(os.Args) == 2 {
 		switch os.Args[1] {
 		case "add":
 			log := Log{}
-			log.Author = prompt("Enter author: ")
 			log.Message = prompt("Enter message: ")
-
+			log.Author = config.Author
 			fmt.Printf("%+v\n", log)
 			os.Exit(0)
 		default:
