@@ -132,6 +132,7 @@ func main() {
 		case "all":
 			beaconLogData := loadLog()
 			printLog(beaconLogData)
+			os.Exit(0)
 		default:
 			os.Exit(1)
 		}
