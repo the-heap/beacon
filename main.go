@@ -20,6 +20,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 )
 
 // ============================
@@ -71,10 +72,25 @@ func printLog(data BeaconLog) {
 	}
 }
 
+// loadConfig loads the .beaconrc file into the beaconConfig
+func loadConfig(config *beaconConfig) error {
+	configFile, err := ioutil.ReadFile("./.beaconrc")
+	if err != nil {
+		return err
+	}
+
+	return json.Unmarshal(configFile, &config)
+}
+
 // ============================
 // MAIN!
 // ============================
 func main() {
+	var config beaconConfig
+
+	if err := loadConfig(&config); err != nil {
+		log.Fatal(err)
+	}
 
 	// read JSON file from disk
 	beaconLogFile, err := ioutil.ReadFile("./beacon_log.json")
@@ -89,4 +105,9 @@ func main() {
 
 	// Print the beacon log!
 	printLog(beaconLogData)
+}
+
+type beaconConfig struct {
+	Author string `json:"author"`
+	Email  string `json:"email"`
 }
