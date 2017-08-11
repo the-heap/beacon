@@ -23,6 +23,8 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+
+	"github.com/the-heap/beacon/config"
 )
 
 // ============================
@@ -44,11 +46,6 @@ type Log struct {
 	Email   string
 	Author  string
 	Message string
-}
-
-type beaconConfig struct {
-	Author string `json:"author"`
-	Email  string `json:"email"`
 }
 
 // ============================
@@ -90,16 +87,6 @@ func printLog(data BeaconLog) {
 	}
 }
 
-// loadConfig loads the .beaconrc file into the beaconConfig
-func loadConfig(config *beaconConfig) error {
-	configFile, err := ioutil.ReadFile("./.beaconrc")
-	if err != nil {
-		return err
-	}
-
-	return json.Unmarshal(configFile, &config)
-}
-
 func prompt(question string) string {
 	reader := bufio.NewReader(os.Stdin)
 	fmt.Print(question)
@@ -112,9 +99,8 @@ func prompt(question string) string {
 // MAIN!
 // ============================
 func main() {
-	var config beaconConfig
-
-	if err := loadConfig(&config); err != nil {
+	cfg, err := config.LoadFile("./.beaconrc")
+	if err != nil {
 		log.Fatal(err)
 	}
 
@@ -126,7 +112,8 @@ func main() {
 		case "add":
 			log := Log{}
 			log.Message = prompt("Enter message: ")
-			log.Author = config.Author
+			log.Email = cfg.Email
+			log.Author = cfg.Author
 			fmt.Printf("%+v\n", log)
 			os.Exit(0)
 		case "all":
