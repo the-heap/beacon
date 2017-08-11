@@ -63,7 +63,7 @@ func checkError(e error) {
 
 // Load the beacon log from file
 func loadLog() BeaconLog {
-	beaconLogData := new(BeaconLog)
+	var beaconLogData BeaconLog
 
 	// read JSON file from disk
 	beaconLogFile, err := ioutil.ReadFile("./beacon_log.json")
@@ -75,7 +75,7 @@ func loadLog() BeaconLog {
 	if err := json.Unmarshal(beaconLogFile, &beaconLogData); err != nil {
 		panic(err)
 	}
-	return *beaconLogData
+	return beaconLogData
 }
 
 // Print the beacon log to the terminal
