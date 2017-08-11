@@ -2,7 +2,8 @@ package errors
 
 import "fmt"
 
-// Error allows us to create constant errors
+// Error allows us to create constant errors. See:
+// https://dave.cheney.net/2016/04/07/constant-errors
 type Error string
 
 func (e Error) Error() string {

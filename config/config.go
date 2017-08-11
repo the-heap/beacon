@@ -6,7 +6,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 
-	"github.com/jbydeley/beacon/errors"
+	"github.com/the-heap/beacon/errors"
 )
 
 const (

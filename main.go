@@ -24,7 +24,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/jbydeley/beacon/config"
+	"github.com/the-heap/beacon/config"
 )
 
 // ============================
