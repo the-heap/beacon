@@ -45,14 +45,15 @@ func LoadLog(logFile string) BeaconLog {
 	return beaconLogData
 }
 
-// PrintLog prints the beacon log to the terminal
-func (data *BeaconLog) PrintLog() {
+// String implements the stringer interface for the BeaconLog struct
+func (data BeaconLog) String() string {
+	var stringOutput string
 	for _, element := range data.Logs {
-		fmt.Println("")
-		fmt.Println("==========================================")
-		fmt.Println("Date: ", element.Date)
-		fmt.Println("Author: ", element.Author+" ("+element.Email+")") // I bet there's a nicer way to do this.
-		fmt.Println("Message: ", element.Message)
-		fmt.Println("==========================================")
+		stringOutput = stringOutput + fmt.Sprintf("\n==========================================\n")
+		stringOutput = stringOutput + fmt.Sprintf("Date: %s\n", element.Date)
+		stringOutput = stringOutput + fmt.Sprintf("Author: %s (%s)\n", element.Author, element.Email)
+		stringOutput = stringOutput + fmt.Sprintf("Message: %s\n", element.Message)
+		stringOutput = stringOutput + fmt.Sprintf("==========================================\n")
 	}
+	return stringOutput
 }

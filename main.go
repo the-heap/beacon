@@ -87,7 +87,7 @@ func main() {
 			os.Exit(0)
 		case "all":
 			beaconLogData := messagelog.LoadLog("./beacon_log.json")
-			beaconLogData.PrintLog()
+			fmt.Println(beaconLogData)
 			os.Exit(0)
 		default:
 			os.Exit(1)
