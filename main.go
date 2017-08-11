@@ -52,12 +52,6 @@ type beaconConfig struct {
 }
 
 // ============================
-// Vars and Constants
-// ============================
-
-var beaconLogData BeaconLog
-
-// ============================
 // FUNCS
 // ============================
 
@@ -65,6 +59,23 @@ func checkError(e error) {
 	if e != nil {
 		panic(e)
 	}
+}
+
+// Load the beacon log from file
+func loadLog() BeaconLog {
+	var beaconLogData BeaconLog
+
+	// read JSON file from disk
+	beaconLogFile, err := ioutil.ReadFile("./beacon_log.json")
+
+	checkError(err)
+
+	// unmarshal json and store it in the pointer to beaconLogData {?}
+	// NOTE: figure out if you can use `checkError` here; don't yet understand golang's idiomatic errors handling.
+	if err := json.Unmarshal(beaconLogFile, &beaconLogData); err != nil {
+		panic(err)
+	}
+	return beaconLogData
 }
 
 // Print the beacon log to the terminal
@@ -118,22 +129,13 @@ func main() {
 			log.Author = config.Author
 			fmt.Printf("%+v\n", log)
 			os.Exit(0)
+		case "all":
+			beaconLogData := loadLog()
+			printLog(beaconLogData)
+			os.Exit(0)
 		default:
 			os.Exit(1)
 		}
 	}
 
-	// read JSON file from disk
-	beaconLogFile, err := ioutil.ReadFile("./beacon_log.json")
-
-	checkError(err)
-
-	// unmarshal json and store it in the pointer to beaconLogData {?}
-	// NOTE: figure out if you can use `checkError` here; don't yet understand golang's idiomatic errors handling.
-	if err := json.Unmarshal(beaconLogFile, &beaconLogData); err != nil {
-		panic(err)
-	}
-
-	// Print the beacon log!
-	printLog(beaconLogData)
 }
