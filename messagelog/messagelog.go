@@ -37,8 +37,6 @@ func LoadLog(logFile string) BeaconLog {
 		log.Fatal(err)
 	}
 
-	// unmarshal json and store it in the pointer to beaconLogData {?}
-	// NOTE: figure out if you can use `checkError` here; don't yet understand golang's idiomatic errors handling.
 	if err := json.Unmarshal(beaconLogFile, &beaconLogData); err != nil {
 		log.Fatal(err)
 	}
