@@ -1,18 +1,1 @@
-{
-  "logs": [
-    {
-      "ID": "lkcjvioejf23",
-      "date": "2017/01/20",
-      "author": "Joe",
-      "email": "joeshumer@joejoe.com",
-      "message": "I installed a packaged!"
-    },
-    {
-      "ID": "2o3u09fja",
-      "date": "2017/04/3",
-      "author": "Carly",
-      "email": "carly@gromponoer.com",
-      "message": "I updated the database!"
-    }
-  ]
-}
+{"Logs":[{"ID":"","Date":"","Email":"john.smith@example.com","Author":"John Smith","Message":"I am the most recent log entry!\n"},{"ID":"lkcjvioejf23","Date":"2017/01/20","Email":"joeshumer@joejoe.com","Author":"Joe","Message":"I installed a packaged!"},{"ID":"2o3u09fja","Date":"2017/04/3","Email":"carly@gromponoer.com","Author":"Carly","Message":"I updated the database!"}]}
