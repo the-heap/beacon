@@ -58,6 +58,9 @@ func main() {
 			log.Email = cfg.Email
 			log.Author = cfg.Author
 			fmt.Printf("%+v\n", log)
+			beaconLogData := messagelog.LoadLog("./beacon_log.json")
+			beaconLogData.Logs = append(beaconLogData.Logs, log)
+			beaconLogData.Save("./beacon_log.json")
 			os.Exit(0)
 		case "all":
 			beaconLogData := messagelog.LoadLog("./beacon_log.json")

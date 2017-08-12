@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"os"
 )
 
 // BeaconLog represents the entire blob of json from the beacon file
@@ -41,6 +42,21 @@ func LoadLog(logFile string) BeaconLog {
 		log.Fatal(err)
 	}
 	return beaconLogData
+}
+
+// Save will persist the log to the file
+func (data BeaconLog) Save(logFile string) error {
+	file, err := os.Create(logFile)
+	if err != nil {
+		return err
+	}
+	defer func() {
+		if err := file.Close(); err != nil {
+			log.Println(err)
+		}
+	}()
+
+	return json.NewEncoder(file).Encode(data)
 }
 
 // String implements the stringer interface for the BeaconLog struct
