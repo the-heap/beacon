@@ -53,19 +53,24 @@ func main() {
 	if len(os.Args) == 2 {
 		switch os.Args[1] {
 		case "add":
-			log := messagelog.Log{}
-			log.Message = prompt("Enter message: ")
-			log.Email = cfg.Email
-			log.Author = cfg.Author
-			fmt.Printf("%+v\n", log)
+			// construct the new Log entry
+			newLog := messagelog.Log{}
+			newLog.Message = prompt("Enter message: ")
+			newLog.Email = cfg.Email
+			newLog.Author = cfg.Author
+
+			// Load beacon_log and prepend newLog to the file
 			beaconLogData := messagelog.LoadLog("./beacon_log.json")
-			beaconLogData.Logs = append(beaconLogData.Logs, log)
+			beaconLogData.Logs = append([]messagelog.Log{newLog}, beaconLogData.Logs...)
 			beaconLogData.Save("./beacon_log.json")
 			os.Exit(0)
+
 		case "all":
+			// Load and print all of the Beacon logs.
 			beaconLogData := messagelog.LoadLog("./beacon_log.json")
 			fmt.Println(beaconLogData)
 			os.Exit(0)
+
 		default:
 			os.Exit(1)
 		}
