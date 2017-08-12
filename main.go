@@ -30,12 +30,6 @@ import (
 // FUNCS
 // ============================
 
-func checkError(e error) {
-	if e != nil {
-		panic(e)
-	}
-}
-
 func prompt(question string) string {
 	reader := bufio.NewReader(os.Stdin)
 	fmt.Print(question)

@@ -1,7 +1,7 @@
 # General Contributing
 If you want to contribute you should follow these steps.
 
-1. Go to our [issues](https://github.com/the-heap/penny/issues/)
+1. Go to our [issues](https://github.com/the-heap/beacon/issues/)
 2. Look for issues that might appeal to you.
 3. Assign the issue to yourself and feel free to comment to let me know you're tackling something / you're approach.
 4. Fork the repo to your own profile and work on a branch there.
@@ -39,7 +39,7 @@ Your pull requests should be _very_ description. Here are some general tips.
 - Don't forget to lint and format your code.
 
 
-# Commenting
+# Commenting / Collaboration / Communication
 
 No jerks.
 
