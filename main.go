@@ -18,14 +18,12 @@ package main
 
 import (
 	"bufio"
-	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
 
-	"github.com/the-heap/beacon/messagelog"
 	"github.com/the-heap/beacon/config"
+	"github.com/the-heap/beacon/messagelog"
 )
 
 // ============================
