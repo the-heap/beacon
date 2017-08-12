@@ -18,35 +18,13 @@ package main
 
 import (
 	"bufio"
-	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
 
 	"github.com/the-heap/beacon/config"
+	"github.com/the-heap/beacon/messagelog"
 )
-
-// ============================
-// Types
-// ============================
-
-// BeaconLog represents the entire blob of json from the beacon file
-type BeaconLog struct {
-	Logs []Log
-}
-
-// Log is a single entry in the BeaconLog;
-//
-// _Example_: a user submits a breaking change to the database,
-// in which they would fill out all the info in this struct.
-type Log struct {
-	ID      string
-	Date    string
-	Email   string
-	Author  string
-	Message string
-}
 
 // ============================
 // FUNCS
@@ -55,35 +33,6 @@ type Log struct {
 func checkError(e error) {
 	if e != nil {
 		panic(e)
-	}
-}
-
-// Load the beacon log from file
-func loadLog() BeaconLog {
-	var beaconLogData BeaconLog
-
-	// read JSON file from disk
-	beaconLogFile, err := ioutil.ReadFile("./beacon_log.json")
-
-	checkError(err)
-
-	// unmarshal json and store it in the pointer to beaconLogData {?}
-	// NOTE: figure out if you can use `checkError` here; don't yet understand golang's idiomatic errors handling.
-	if err := json.Unmarshal(beaconLogFile, &beaconLogData); err != nil {
-		panic(err)
-	}
-	return beaconLogData
-}
-
-// Print the beacon log to the terminal
-func printLog(data BeaconLog) {
-	for _, element := range data.Logs {
-		fmt.Println("")
-		fmt.Println("==========================================")
-		fmt.Println("Date: ", element.Date)
-		fmt.Println("Author: ", element.Author+" ("+element.Email+")") // I bet there's a nicer way to do this.
-		fmt.Println("Message: ", element.Message)
-		fmt.Println("==========================================")
 	}
 }
 
@@ -110,15 +59,15 @@ func main() {
 	if len(os.Args) == 2 {
 		switch os.Args[1] {
 		case "add":
-			log := Log{}
+			log := messagelog.Log{}
 			log.Message = prompt("Enter message: ")
 			log.Email = cfg.Email
 			log.Author = cfg.Author
 			fmt.Printf("%+v\n", log)
 			os.Exit(0)
 		case "all":
-			beaconLogData := loadLog()
-			printLog(beaconLogData)
+			beaconLogData := messagelog.LoadLog("./beacon_log.json")
+			fmt.Println(beaconLogData)
 			os.Exit(0)
 		default:
 			os.Exit(1)
