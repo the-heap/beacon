@@ -26,8 +26,8 @@ type Config struct {
 	Email  string `json:"email"`
 }
 
-// LoadFile reads the file provided and returns a Config.
-func LoadFile(path string) (*Config, error) {
+// Load reads the file provided and returns a Config.
+func Load(path string) (*Config, error) {
 	if path == "" {
 		return nil, ErrInvalidPath
 	}
