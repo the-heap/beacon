@@ -23,7 +23,7 @@ import (
 	"os"
 
 	"github.com/the-heap/beacon/config"
-	"github.com/the-heap/beacon/messagelog"
+	"github.com/the-heap/beacon/messages"
 )
 
 // ============================
@@ -42,33 +42,24 @@ func prompt(question string) string {
 // MAIN!
 // ============================
 func main() {
-	cfg, err := config.LoadFile("./.beaconrc")
+	cfg, err := config.Load("./.beaconrc")
 	if err != nil {
 		log.Fatal(err)
 	}
 
+	// Load beacon_log and prepend newLog to the file
+	logs := messages.Load("./beacon_log.json")
+
 	// parse command line arguments to determine action
-	// TODO: Log date and Log unique ID
-	// TODO: Switch from prompt to `beacon add "this is my breaking change message"`
-	if len(os.Args) == 2 {
+	if len(os.Args) >= 2 {
 		switch os.Args[1] {
 		case "add":
-			// construct the new Log entry
-			newLog := messagelog.Log{}
-			newLog.Message = prompt("Enter message: ")
-			newLog.Email = cfg.Email
-			newLog.Author = cfg.Author
-
-			// Load beacon_log and prepend newLog to the file
-			beaconLogData := messagelog.LoadLog("./beacon_log.json")
-			beaconLogData.Logs = append([]messagelog.Log{newLog}, beaconLogData.Logs...)
-			beaconLogData.Save("./beacon_log.json")
+			logs = append(logs, messages.New(os.Args[2], cfg))
+			messages.Save("./beacon_log.json", logs)
 			os.Exit(0)
 
 		case "all":
-			// Load and print all of the Beacon logs.
-			beaconLogData := messagelog.LoadLog("./beacon_log.json")
-			fmt.Println(beaconLogData)
+			messages.Show(logs, -1)
 			os.Exit(0)
 
 		default:

@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func Test_LoadFile(t *testing.T) {
+func Test_Load(t *testing.T) {
 	tt := []struct {
 		Path string
 		Err  error
@@ -27,25 +27,25 @@ func Test_LoadFile(t *testing.T) {
 
 	for _, tc := range tt {
 		path := path.Join("testdata", tc.Path)
-		_, err := LoadFile(path)
+		_, err := Load(path)
 		if err != tc.Err {
-			t.Fatalf("LoadFile(%v) returned an error (%v)", path, err)
+			t.Fatalf("Load(%v) returned an error (%v)", path, err)
 		}
 	}
 }
 
-func Test_LoadFile_MissingFile(t *testing.T) {
+func Test_Load_MissingFile(t *testing.T) {
 	path := path.Join("testdata", "no_exist.json")
-	_, err := LoadFile(path)
+	_, err := Load(path)
 	if err == nil {
-		t.Fatalf("LoadFile(%v) should have returned an error but did not", path)
+		t.Fatalf("Load(%v) should have returned an error but did not", path)
 	}
 }
 
-func Test_LoadFile_EmptyPath(t *testing.T) {
-	_, err := LoadFile("")
+func Test_Load_EmptyPath(t *testing.T) {
+	_, err := Load("")
 	if err != ErrInvalidPath {
-		t.Fatalf("LoadFile(%v) should have return returned (%v)", "", ErrInvalidPath)
+		t.Fatalf("Load(%v) should have return returned (%v)", "", ErrInvalidPath)
 	}
 }
 
