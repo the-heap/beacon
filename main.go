@@ -17,33 +17,37 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
-
-	"github.com/the-heap/beacon/config"
-	"github.com/the-heap/beacon/messages"
 )
 
 func main() {
-	cfg, err := config.Load("./.beaconrc")
+	cfg, err := LoadConfigFile("./.beaconrc")
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// Load beacon_log and prepend newLog to the file
-	logs := messages.Load("./beacon_log.json")
+	logs := LoadBeaconLog("./beacon_log.json")
 
 	// parse command line arguments to determine action
 	if len(os.Args) >= 2 {
 		switch os.Args[1] {
 		case "add":
-			logs = append(logs, messages.New(os.Args[2], cfg))
-			messages.Save("./beacon_log.json", logs)
+			logs = append(logs, New(os.Args[2], cfg))
+			SaveNewLog("./beacon_log.json", logs)
 			os.Exit(0)
 
 		case "all":
-			messages.Show(logs, -1)
+			ShowLog(logs, -1)
 			os.Exit(0)
+
+		case "show":
+			CheckArgs([]string{"int"}, os.Args[2:], "show")
+
+			ShowLog(logs, 2)
+			fmt.Println("")
 
 		default:
 			os.Exit(1)

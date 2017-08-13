@@ -1,6 +1,4 @@
-// Package messages provides the data type for holding the beacon log data
-// and methods for loading and storing to/from the log file
-package messages
+package main
 
 import (
 	"bytes"
@@ -11,8 +9,6 @@ import (
 	"os"
 	"sort"
 	"time"
-
-	"github.com/the-heap/beacon/config"
 )
 
 // Log is a single entry in the Log File that represents a breaking change;
@@ -27,7 +23,7 @@ type Log struct {
 }
 
 // New instantiates a log
-func New(msg string, cfg *config.Config) Log {
+func New(msg string, cfg *Config) Log {
 	return Log{
 		Author:  cfg.Author,
 		Email:   cfg.Email,
@@ -36,8 +32,8 @@ func New(msg string, cfg *config.Config) Log {
 	}
 }
 
-// Load loads the beacon log from the specified file
-func Load(logFileName string) []Log {
+// LoadBeaconLog loads the beacon log from the specified file
+func LoadBeaconLog(logFileName string) []Log {
 	var logs []Log
 
 	// read JSON file from disk
@@ -57,8 +53,8 @@ func Load(logFileName string) []Log {
 	return logs
 }
 
-// Save will persist the log to the file
-func Save(logFile string, data []Log) error {
+// SaveNewLog will persist the log to the file
+func SaveNewLog(logFile string, data []Log) error {
 	file, err := os.Create(logFile)
 	if err != nil {
 		return err
@@ -72,8 +68,8 @@ func Save(logFile string, data []Log) error {
 	return json.NewEncoder(file).Encode(data)
 }
 
-// Show prints the number of beacon entries requested
-func Show(logs []Log, count int) {
+// ShowLog prints the number of beacon entries requested
+func ShowLog(logs []Log, count int) {
 	if count > len(logs) || count < 0 {
 		count = len(logs)
 	}
