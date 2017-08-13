@@ -3,7 +3,6 @@ package main
 import (
 	"encoding/json"
 	"io/ioutil"
-	// "github.com/the-heap/beacon/errors"
 )
 
 const (
@@ -23,7 +22,7 @@ type Config struct {
 	Email  string `json:"email"`
 }
 
-// Load reads the file provided and returns a Config.
+// LoadConfigFile reads the file provided and returns a Config.
 func LoadConfigFile(path string) (*Config, error) {
 	if path == "" {
 		return nil, ErrInvalidPath
