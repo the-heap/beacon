@@ -2,7 +2,10 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
+	// "fmt"
 	"io/ioutil"
+	"os"
 )
 
 const (
@@ -54,4 +57,21 @@ func LoadConfig(config []byte) (*Config, error) {
 	}
 
 	return cfg, nil
+}
+
+// InitConfig is used to setup Beacon on first run
+// - It checks to see if there is a beaconrc file with the proper contents
+// - ie. a user and email is configured
+// - if there is no beacon_log.json, create it.
+func InitConfig() {
+	_, err := os.Stat("./beaconrdac")
+	if err == nil {
+		fmt.Println("You already have a beaconrc")
+		// TODO: Instruct user they can update it...
+	} else if os.IsNotExist(err) {
+		fmt.Println("File does not exist!")
+		// TODO: Prompt user to make one, add credentials etc.
+	} else {
+		fmt.Println("The stat call to your beaconrc failed", err)
+	}
 }

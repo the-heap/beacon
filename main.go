@@ -49,6 +49,9 @@ func main() {
 			ShowLog(logs, 2)
 			fmt.Println("")
 
+		case "init":
+			InitConfig()
+
 		default:
 			os.Exit(1)
 		}
