@@ -1,4 +1,4 @@
-package messages
+package main
 
 import "testing"
 
