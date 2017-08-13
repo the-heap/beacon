@@ -17,8 +17,6 @@
 package main
 
 import (
-	"bufio"
-	"fmt"
 	"log"
 	"os"
 
@@ -26,21 +24,6 @@ import (
 	"github.com/the-heap/beacon/messages"
 )
 
-// ============================
-// FUNCS
-// ============================
-
-func prompt(question string) string {
-	reader := bufio.NewReader(os.Stdin)
-	fmt.Print(question)
-	message, _ := reader.ReadString('\n')
-
-	return message
-}
-
-// ============================
-// MAIN!
-// ============================
 func main() {
 	cfg, err := config.Load("./.beaconrc")
 	if err != nil {
