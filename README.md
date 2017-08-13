@@ -46,9 +46,10 @@ The following steps will inform the code you write and help you make good pull r
 2. Fork this repo
 3. Clone your fork to your GOPATH (for example mine is, ~/Development/go/src/github.com/teesloane/beacon)
   - Yours might be something like `~/go/src/github.com/{yourGithubUserName}/beacon`
-4. Try running Beacon: 
+4. Run Beacon 
   - Navigate to the beacon folder in your terminal
-  - type: `go run main.go`
+  - Run `go build` to compile a binary of Beacon
+  - Test Beacon (example: `beacon all` -> should print the entire beacon log)
 
 # Terminology
 
