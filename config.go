@@ -31,6 +31,11 @@ func LoadConfigFile(path string) (*Config, error) {
 		return nil, ErrInvalidPath
 	}
 
+	_, err := os.Stat("./.beaconrc")
+	if err != nil {
+		InitConfig()
+	}
+
 	body, err := ioutil.ReadFile(path)
 	if err != nil {
 		return nil, Wrap("error reading file", err)
@@ -96,4 +101,24 @@ func InitConfig() {
 	} else {
 		fmt.Println("The stat call to your beaconrc failed", err)
 	}
+}
+
+// InitBeaconLog creates a new `beacon_log.json` file in the directory in which beacon was invoked from
+func InitBeaconLog() {
+	// Check if the file exists!
+	_, err := os.Stat("./beacon_log.json")
+	if err != nil {
+		fmt.Println("No Beacon Log found! Creating one now.")
+		fmt.Println("You are good to go! 🔥")
+
+		// Create the beacon file.
+		file, err := os.Create("./beacon_log.json")
+		if err != nil {
+			fmt.Println("Failed to create beacon log")
+		}
+
+		file.WriteString("[]")
+		file.Close()
+	}
+	os.Exit(1)
 }
