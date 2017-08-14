@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"strings"
 )
 
 // Prompt gets text input from the user and returns it as a string.
@@ -33,4 +34,11 @@ func CheckArgs(typesNeeded []string, args []string, commandName string) {
 
 	// TODO: iterate over `typesNeeded` and check each arg matches each typeneeded
 
+}
+
+// ToStringCutNewLine converts a byte to a string and removes the newline
+// - This is used for converting Output() values from os/exec that have a newline,
+// and need to be a string to write to a file.
+func ToStringCutNewLine(byteArr []byte) string {
+	return strings.TrimSpace(string(byteArr))
 }

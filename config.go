@@ -2,7 +2,10 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
+	"os"
+	"os/exec"
 )
 
 const (
@@ -26,6 +29,11 @@ type Config struct {
 func LoadConfigFile(path string) (*Config, error) {
 	if path == "" {
 		return nil, ErrInvalidPath
+	}
+
+	_, err := os.Stat("./.beaconrc")
+	if err != nil {
+		InitConfig()
 	}
 
 	body, err := ioutil.ReadFile(path)
@@ -54,4 +62,63 @@ func LoadConfig(config []byte) (*Config, error) {
 	}
 
 	return cfg, nil
+}
+
+// InitConfig is used to setup Beacon on first run
+// - Checks for the beacon rc file.
+// - If there is no creds configured, try and retrieve them from git and implement
+func InitConfig() {
+	_, err := os.Stat("./.beaconrc")
+	// Beacon file Exists
+	if err == nil {
+		fmt.Println("You already have a beaconrc! You can update by hand if needed.")
+
+		// beaconrc file does not exist
+	} else if os.IsNotExist(err) {
+		// Get Git credentials
+		gitUserName, err := exec.Command("sh", "-c", "git config --get user.name").Output()
+		if err != nil {
+			fmt.Println("No Git user name found", err)
+		}
+
+		gitEmail, err := exec.Command("sh", "-c", "git config --get user.email").Output()
+		if err != nil {
+			fmt.Println("No Git email found", err)
+		}
+
+		// Welcome message
+		fmt.Println("\nHi, I'm Beacon! 🚨 — I'm here to help you and your team keep in touch about breaking changes.")
+		fmt.Println("I set up a `beaconrc` file in your directory root with your Git information. You can change this whenever you need!")
+		fmt.Println("Thanks for using Beacon and have fun breaking stuff! 🔨")
+
+		// create and write RC file
+		file, err := os.Create("./.beaconrc")
+		if err != nil {
+		}
+
+		json.NewEncoder(file).Encode(Config{ToStringCutNewLine(gitUserName), ToStringCutNewLine(gitEmail)})
+
+	} else {
+		fmt.Println("The stat call to your beaconrc failed", err)
+	}
+}
+
+// InitBeaconLog creates a new `beacon_log.json` file in the directory in which beacon was invoked from
+func InitBeaconLog() {
+	// Check if the file exists!
+	_, err := os.Stat("./beacon_log.json")
+	if err != nil {
+		fmt.Println("No Beacon Log found! Creating one now.")
+		fmt.Println("You are good to go! 🔥")
+
+		// Create the beacon file.
+		file, err := os.Create("./beacon_log.json")
+		if err != nil {
+			fmt.Println("Failed to create beacon log")
+		}
+
+		file.WriteString("[]")
+		file.Close()
+	}
+	os.Exit(1)
 }

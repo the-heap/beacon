@@ -36,6 +36,12 @@ func New(msg string, cfg *Config) Log {
 func LoadBeaconLog(logFileName string) []Log {
 	var logs []Log
 
+	// Check if file exists
+	_, err := os.Stat("./beacon_log.json")
+	if err != nil {
+		InitBeaconLog()
+	}
+
 	// read JSON file from disk
 	logFile, err := ioutil.ReadFile(logFileName)
 
