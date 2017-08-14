@@ -12,7 +12,7 @@ Beacon wants to be a helpful tool that makes it easier to keep up to date with _
 - Your team is working on an app that tells household cats which furniture they can scratch on a specific day.
 - You write a migration for your database; this change is a _breaking change_ because your team won't be able to continue hacking until they too update their databases on their local dev machines.
 - Rather than having your team fumble trying to figure out what changes were made and why the cats are now able to scratch all the furniture they like; you can use Beacon to keep your team up to date!
-- After making your breaking change, you can run beacon in the command line to write a note that you made a breaking change. Beacon will store this note in the log of breaking changes.
+- After making your breaking change, you can run beacon in the command line to write a note that you made a breaking change. Beacon will store this note in the log of breaking changes. (Dev note: we hope to automate this with path-watching + git too!)
 - Whenever a dev finds something a bit troubling with their development environment, they can run Beacon from their command line to see if there were any recent changes.
 
 Note, I intend for this project to be written in [Golang](); there are a lot of [boilerplate](https://github.com/urfave/cli) [tools](https://github.com/mkideal/cli) and [libraries](https://github.com/spf13/cobra) for building CLI tools more easily; but we'll try building this from scratch so we can get to know the language. I, at least, want to improve my understanding of Go at a more basic level. Also, as someone who started out as a web dev, I have less experience with simple stuff like reading / writing files / command line tooling. 
