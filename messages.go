@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"io"
 	"log"
 	"sort"
 	"time"
@@ -79,13 +78,13 @@ func SaveNewLog(logFile string, data []Log) error {
 }
 
 // ShowLog prints the number of beacon entries requested
-func ShowLog(w io.Writer, logs []Log, count int) {
+func ShowLog(logs []Log, count int) {
 	if count > len(logs) || count < 0 {
 		count = len(logs)
 	}
 
 	for i := count; i > 0; i-- {
-		fmt.Fprintln(w, logs[i-1])
+		fmt.Fprintln(out, logs[i-1])
 	}
 }
 

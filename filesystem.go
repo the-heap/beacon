@@ -32,12 +32,21 @@ func (osFS) Stat(name string) (os.FileInfo, error) { return os.Stat(name) }
 func (osFS) Create(name string) (file, error)      { return os.Create(name) }
 func (osFS) ReadFile(name string) ([]byte, error)  { return ioutil.ReadFile(name) }
 
+/*
+cmdRunning is an interface so that we don't need to utilize
+exec.Command directly. This allows us to mock out exec commands for
+our tests.
+*/
 type cmdRunner interface {
 	Run(string, ...string) ([]byte, error)
 }
 
 type realRunner struct{}
 
+/*
+Run makes sure that realRunner implements our cmdRunner interface. This is
+the struct that will actually run our exec.Command.
+*/
 func (realRunner) Run(cmd string, args ...string) ([]byte, error) {
 	return exec.Command(cmd, args...).Output()
 }

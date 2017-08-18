@@ -53,13 +53,13 @@ func main() {
 			os.Exit(0)
 
 		case "all":
-			ShowLog(os.Stdout, logs, -1)
+			ShowLog(logs, -1)
 			os.Exit(0)
 
 		case "show":
 			CheckArgs([]string{"int"}, os.Args[2:], "show")
 
-			ShowLog(os.Stdout, logs, 2)
+			ShowLog(logs, 2)
 			fmt.Println("")
 
 		case "init":

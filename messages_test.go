@@ -40,8 +40,6 @@ func Test_SaveNewLog(t *testing.T) {
 }
 
 func Test_ShowLog(t *testing.T) {
-	rc = mockClock{}
-
 	cfg := &Config{
 		Author: TestAuthorName,
 		Email:  TestAuthorEmail,
@@ -53,10 +51,11 @@ func Test_ShowLog(t *testing.T) {
 		}
 
 		Convey("With -1 for the count", func() {
-			w := &mockWriter{}
+			out = &mockWriter{}
 
 			Convey("Should return all logs", func() {
-				ShowLog(w, logs, -1)
+				ShowLog(logs, -1)
+				w := out.(*mockWriter)
 				So(w.String(), ShouldEqual, `
 ==========================================
 Date: Aug 16 21:02:03
@@ -77,8 +76,9 @@ Message: First
 
 		Convey("With a number greater then the total logs", func() {
 			Convey("Should return all logs", func() {
-				w := &mockWriter{}
-				ShowLog(w, logs, 5)
+				out = &mockWriter{}
+				ShowLog(logs, 5)
+				w := out.(*mockWriter)
 				So(w.String(), ShouldEqual, `
 ==========================================
 Date: Aug 16 21:02:03
@@ -99,8 +99,9 @@ Message: First
 
 		Convey("With a number greater then 0 and less then the total logs", func() {
 			Convey("Should return that number of logs", func() {
-				w := &mockWriter{}
-				ShowLog(w, logs, 1)
+				out = &mockWriter{}
+				ShowLog(logs, 1)
+				w := out.(*mockWriter)
 				So(w.String(), ShouldEqual, `
 ==========================================
 Date: Aug 16 21:02:03
@@ -173,6 +174,10 @@ func Test_InitBeaconLog(t *testing.T) {
 	})
 }
 
+/*
+mockWriter allows us to pass in an io.Writer that collects the
+data written and can give it back to us later in the test
+*/
 type mockWriter struct {
 	data bytes.Buffer
 }
@@ -180,11 +185,16 @@ type mockWriter struct {
 func (m mockWriter) String() string {
 	return m.data.String()
 }
+
 func (m *mockWriter) Write(data []byte) (int, error) {
 	m.data.Write(data)
 	return 0, nil
 }
 
+/*
+mockFS is an implementation of the fileSystem interface and allows
+us to mock actually talking to a file system
+*/
 type mockFS struct {
 	statErr      bool
 	fileContents string
@@ -206,6 +216,7 @@ func (m mockFS) ReadFile(name string) ([]byte, error) {
 	return []byte(m.fileContents), nil
 }
 
+// mockFile is an implementation of the file interface
 type mockFile struct {
 	io.Closer
 	io.Reader
@@ -230,8 +241,10 @@ func (mockFile) Write(data []byte) (int, error) {
 	return len(data), nil
 }
 
+// mockClock is an implementation of the clock interface
 type mockClock struct{}
 
+// Now always returns the same time.
 func (mockClock) Now() time.Time {
 	return time.Date(2017, time.August, 17, 1, 2, 3, 4, time.UTC)
 }
