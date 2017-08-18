@@ -1,39 +1,250 @@
 package main
 
-import "testing"
+import (
+	"bytes"
+	"io"
+	"os"
+	"testing"
+	"time"
 
-func TestString(t *testing.T) {
-	type test struct {
-		Log      Log
-		expected string
+	. "github.com/smartystreets/goconvey/convey"
+)
+
+const (
+	TestAuthorName  = "John Smith"
+	TestAuthorEmail = "john.smith@example.com"
+)
+
+func Test_New(t *testing.T) {
+	Convey("When creating a log with New", t, func() {
+		rc = mockClock{}
+
+		cfg := &Config{
+			Author: TestAuthorName,
+			Email:  TestAuthorEmail,
+		}
+
+		Convey("Should return a new log", func() {
+			log := New("New Log", cfg)
+
+			So(log.Author, ShouldEqual, TestAuthorName)
+		})
+	})
+}
+
+func Test_SaveNewLog(t *testing.T) {
+	Convey("When saving a log file", t, func() {
+		err := SaveNewLog("beacon_test.json", []Log{})
+		So(err, ShouldEqual, nil)
+	})
+}
+
+func Test_ShowLog(t *testing.T) {
+	cfg := &Config{
+		Author: TestAuthorName,
+		Email:  TestAuthorEmail,
 	}
+	Convey("When ShowLog is called", t, func() {
+		logs := []Log{
+			New("First", cfg),
+			New("Second", cfg),
+		}
 
-	testArray := []struct {
-		Log      Log
-		expected string
-	}{
-		{
-			Log{
-				Date:    1502569641,
-				Email:   "j@jh.com",
-				Author:  "John Henry",
-				Message: "I broke lots of things!",
-			},
-			`
+		Convey("With -1 for the count", func() {
+			out = &mockWriter{}
+
+			Convey("Should return all logs", func() {
+				ShowLog(logs, -1)
+				w := out.(*mockWriter)
+				So(w.String(), ShouldEqual, `
+==========================================
+Date: Aug 16 21:02:03
+Author: John Smith (john.smith@example.com)
+Message: Second
+==========================================
+
+
+==========================================
+Date: Aug 16 21:02:03
+Author: John Smith (john.smith@example.com)
+Message: First
+==========================================
+
+`)
+			})
+		})
+
+		Convey("With a number greater then the total logs", func() {
+			Convey("Should return all logs", func() {
+				out = &mockWriter{}
+				ShowLog(logs, 5)
+				w := out.(*mockWriter)
+				So(w.String(), ShouldEqual, `
+==========================================
+Date: Aug 16 21:02:03
+Author: John Smith (john.smith@example.com)
+Message: Second
+==========================================
+
+
+==========================================
+Date: Aug 16 21:02:03
+Author: John Smith (john.smith@example.com)
+Message: First
+==========================================
+
+`)
+			})
+		})
+
+		Convey("With a number greater then 0 and less then the total logs", func() {
+			Convey("Should return that number of logs", func() {
+				out = &mockWriter{}
+				ShowLog(logs, 1)
+				w := out.(*mockWriter)
+				So(w.String(), ShouldEqual, `
+==========================================
+Date: Aug 16 21:02:03
+Author: John Smith (john.smith@example.com)
+Message: First
+==========================================
+
+`)
+			})
+		})
+	})
+}
+func TestString(t *testing.T) {
+	Convey("String should format the Log", t, func() {
+		log := Log{
+			Date:    1502569641,
+			Email:   TestAuthorEmail,
+			Author:  TestAuthorName,
+			Message: "I broke lots of things!",
+		}
+
+		expected := `
 ==========================================
 Date: Aug 12 16:27:21
-Author: John Henry (j@jh.com)
+Author: John Smith (john.smith@example.com)
 Message: I broke lots of things!
 ==========================================
-`,
-		},
-	}
+`
 
-	for _, test := range testArray {
-		got := test.Log.String()
-		if got != test.expected {
-			t.Errorf("Got doesn't equal expected result:\nGot:%v\nWant:%v\n", got, test.expected)
-		}
-	}
+		actual := log.String()
 
+		So(actual, ShouldEqual, expected)
+	})
+}
+
+func Test_LoadBeaconLog(t *testing.T) {
+	Convey("When loading a beacon log", t, func() {
+		Convey("When the log doesn't exist", func() {
+			fs = mockFS{
+				statErr:      true,
+				fileContents: "[]",
+			}
+			logs := LoadBeaconLog("fake_file.json")
+			So(len(logs), ShouldEqual, 0)
+		})
+	})
+}
+func Test_InitBeaconLog(t *testing.T) {
+
+	Convey("When initializing a beacon log", t, func() {
+
+		Convey("Should return ErrBeaconLogExists if beacon_log.json exists", func() {
+			fs = mockFS{}
+
+			err := InitBeaconLog("beacon_test.json")
+			So(err, ShouldEqual, ErrBeaconLogExists)
+		})
+
+		Convey("Should create beacon_log.json if it doesn't exist", func() {
+			fs = mockFS{
+				true,
+				"",
+			}
+			err := InitBeaconLog("beacon_test.json")
+
+			Convey("Should have no errors", func() {
+				So(err, ShouldEqual, nil)
+			})
+		})
+	})
+}
+
+/*
+mockWriter allows us to pass in an io.Writer that collects the
+data written and can give it back to us later in the test
+*/
+type mockWriter struct {
+	data bytes.Buffer
+}
+
+func (m mockWriter) String() string {
+	return m.data.String()
+}
+
+func (m *mockWriter) Write(data []byte) (int, error) {
+	m.data.Write(data)
+	return 0, nil
+}
+
+/*
+mockFS is an implementation of the fileSystem interface and allows
+us to mock actually talking to a file system
+*/
+type mockFS struct {
+	statErr      bool
+	fileContents string
+}
+
+func (mockFS) Open(name string) (file, error) { return os.Open(name) }
+func (m mockFS) Stat(name string) (os.FileInfo, error) {
+	if m.statErr {
+		return nil, os.ErrNotExist
+	}
+	return nil, nil
+}
+
+func (mockFS) Create(name string) (file, error) {
+	return mockFile{}, nil
+}
+
+func (m mockFS) ReadFile(name string) ([]byte, error) {
+	return []byte(m.fileContents), nil
+}
+
+// mockFile is an implementation of the file interface
+type mockFile struct {
+	io.Closer
+	io.Reader
+	io.ReaderAt
+	io.Seeker
+	io.Writer
+}
+
+func (mockFile) Stat() (os.FileInfo, error) {
+	return os.Stat("fake file")
+}
+
+func (mockFile) WriteString(data string) (int, error) {
+	return 0, nil
+}
+
+func (mockFile) Close() error {
+	return nil
+}
+
+func (mockFile) Write(data []byte) (int, error) {
+	return len(data), nil
+}
+
+// mockClock is an implementation of the clock interface
+type mockClock struct{}
+
+// Now always returns the same time.
+func (mockClock) Now() time.Time {
+	return time.Date(2017, time.August, 17, 1, 2, 3, 4, time.UTC)
 }
