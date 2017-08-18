@@ -4,11 +4,15 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
-	"os"
 	"sort"
 	"time"
+)
+
+const (
+	// ErrBeaconLogExists is returned when trying to initialize a beacon log when one exists
+	ErrBeaconLogExists = Error("beacon_log.json already exists")
 )
 
 // Log is a single entry in the Log File that represents a breaking change;
@@ -28,7 +32,7 @@ func New(msg string, cfg *Config) Log {
 		Author:  cfg.Author,
 		Email:   cfg.Email,
 		Message: msg,
-		Date:    time.Now().Unix(),
+		Date:    rc.Now().Unix(),
 	}
 }
 
@@ -37,13 +41,13 @@ func LoadBeaconLog(logFileName string) []Log {
 	var logs []Log
 
 	// Check if file exists
-	_, err := os.Stat("./beacon_log.json")
+	_, err := fs.Stat(logFileName)
 	if err != nil {
-		InitBeaconLog()
+		InitBeaconLog(logFileName)
 	}
 
 	// read JSON file from disk
-	logFile, err := ioutil.ReadFile(logFileName)
+	logFile, err := fs.ReadFile(logFileName)
 
 	if err != nil {
 		log.Fatal(err)
@@ -61,7 +65,7 @@ func LoadBeaconLog(logFileName string) []Log {
 
 // SaveNewLog will persist the log to the file
 func SaveNewLog(logFile string, data []Log) error {
-	file, err := os.Create(logFile)
+	file, err := fs.Create(logFile)
 	if err != nil {
 		return err
 	}
@@ -75,13 +79,13 @@ func SaveNewLog(logFile string, data []Log) error {
 }
 
 // ShowLog prints the number of beacon entries requested
-func ShowLog(logs []Log, count int) {
+func ShowLog(w io.Writer, logs []Log, count int) {
 	if count > len(logs) || count < 0 {
 		count = len(logs)
 	}
 
 	for i := count; i > 0; i-- {
-		fmt.Println(logs[i-1])
+		fmt.Fprintln(w, logs[i-1])
 	}
 }
 
@@ -94,4 +98,23 @@ func (l Log) String() string {
 	fmt.Fprintf(buf, "Message: %s\n", l.Message)
 	fmt.Fprintf(buf, "==========================================\n")
 	return buf.String()
+}
+
+// InitBeaconLog creates a new `beacon_log.json` file in the directory in which beacon was invoked from
+func InitBeaconLog(path string) error {
+	// Check if the file exists!
+	_, err := fs.Stat(path)
+	if err == nil {
+		return ErrBeaconLogExists
+	}
+
+	// Create the beacon file.
+	file, err := fs.Create(path)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	file.WriteString("[]")
+	return nil
 }

@@ -3,9 +3,8 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"log"
 	"os"
-	"os/exec"
 )
 
 const (
@@ -17,6 +16,9 @@ const (
 
 	// ErrEmailRequired is returned when a config is loaded without an Email
 	ErrEmailRequired = Error("email not found in config file")
+
+	// ErrBeaconLogExists is returned when trying to initialize a beacon log when one exists
+	ErrConfigExists = Error(".beaconrc already exists")
 )
 
 // Config holds all configuration for beacon to work
@@ -31,12 +33,12 @@ func LoadConfigFile(path string) (*Config, error) {
 		return nil, ErrInvalidPath
 	}
 
-	_, err := os.Stat("./.beaconrc")
+	_, err := fs.Stat(path)
 	if err != nil {
-		InitConfig()
+		InitConfig(path)
 	}
 
-	body, err := ioutil.ReadFile(path)
+	body, err := fs.ReadFile(path)
 	if err != nil {
 		return nil, Wrap("error reading file", err)
 	}
@@ -67,23 +69,23 @@ func LoadConfig(config []byte) (*Config, error) {
 // InitConfig is used to setup Beacon on first run
 // - Checks for the beacon rc file.
 // - If there is no creds configured, try and retrieve them from git and implement
-func InitConfig() {
-	_, err := os.Stat("./.beaconrc")
+func InitConfig(path string) error {
+	_, err := fs.Stat(path)
 	// Beacon file Exists
 	if err == nil {
-		fmt.Println("You already have a beaconrc! You can update by hand if needed.")
+		return ErrConfigExists
 
 		// beaconrc file does not exist
 	} else if os.IsNotExist(err) {
 		// Get Git credentials
-		gitUserName, err := exec.Command("sh", "-c", "git config --get user.name").Output()
+		gitUserName, err := runner.Run("sh", "-c", "git config --get user.name")
 		if err != nil {
-			fmt.Println("No Git user name found", err)
+			log.Println("No Git user name found", err)
 		}
 
-		gitEmail, err := exec.Command("sh", "-c", "git config --get user.email").Output()
+		gitEmail, err := runner.Run("sh", "-c", "git config --get user.email")
 		if err != nil {
-			fmt.Println("No Git email found", err)
+			log.Println("No Git email found", err)
 		}
 
 		// Welcome message
@@ -92,33 +94,14 @@ func InitConfig() {
 		fmt.Println("Thanks for using Beacon and have fun breaking stuff! 🔨")
 
 		// create and write RC file
-		file, err := os.Create("./.beaconrc")
+		file, err := fs.Create(path)
 		if err != nil {
 		}
 
 		json.NewEncoder(file).Encode(Config{ToStringCutNewLine(gitUserName), ToStringCutNewLine(gitEmail)})
 
 	} else {
-		fmt.Println("The stat call to your beaconrc failed", err)
+		return err
 	}
-}
-
-// InitBeaconLog creates a new `beacon_log.json` file in the directory in which beacon was invoked from
-func InitBeaconLog() {
-	// Check if the file exists!
-	_, err := os.Stat("./beacon_log.json")
-	if err != nil {
-		fmt.Println("No Beacon Log found! Creating one now.")
-		fmt.Println("You are good to go! 🔥")
-
-		// Create the beacon file.
-		file, err := os.Create("./beacon_log.json")
-		if err != nil {
-			fmt.Println("Failed to create beacon log")
-		}
-
-		file.WriteString("[]")
-		file.Close()
-	}
-	os.Exit(1)
+	return nil
 }

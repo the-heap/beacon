@@ -18,11 +18,24 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"log"
 	"os"
 )
 
+var (
+	fs     fileSystem
+	runner cmdRunner
+	rc     clock
+	out    io.Writer
+)
+
 func main() {
+	fs = osFS{}
+	runner = realRunner{}
+	rc = realClock{}
+	out = os.Stdout
+
 	cfg, err := LoadConfigFile("./.beaconrc")
 	if err != nil {
 		log.Fatal(err)
@@ -40,17 +53,17 @@ func main() {
 			os.Exit(0)
 
 		case "all":
-			ShowLog(logs, -1)
+			ShowLog(os.Stdout, logs, -1)
 			os.Exit(0)
 
 		case "show":
 			CheckArgs([]string{"int"}, os.Args[2:], "show")
 
-			ShowLog(logs, 2)
+			ShowLog(os.Stdout, logs, 2)
 			fmt.Println("")
 
 		case "init":
-			InitConfig()
+			//InitConfig()
 
 		default:
 			os.Exit(1)
