@@ -10,7 +10,7 @@ import (
 // Prompt gets text input from the user and returns it as a string.
 func Prompt(question string) string {
 	reader := bufio.NewReader(os.Stdin)
-	fmt.Print(question)
+	fmt.Fprint(out, question)
 	message, _ := reader.ReadString('\n')
 	return message
 }
@@ -27,8 +27,8 @@ func (d ByDate) Less(i, j int) bool { return d[i].Date > d[j].Date }
 func CheckArgs(typesNeeded []string, args []string, commandName string) {
 	// bail early if args passed in doesn't match length of types expected
 	if len(args) != len(typesNeeded) {
-		fmt.Println("\n" + "You did not provide the correct arguments to 'beacon " + commandName + "'")
-		fmt.Println("You can type 'beacon --help' for more information on how to use Beacon")
+		fmt.Fprintln(out, "\n"+"You did not provide the correct arguments to 'beacon "+commandName+"'")
+		fmt.Fprintln(out, "You can type 'beacon --help' for more information on how to use Beacon")
 		os.Exit(1)
 	}
 
