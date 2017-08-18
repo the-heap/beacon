@@ -134,6 +134,7 @@ func Test_InitConfig(t *testing.T) {
 				return buf.Bytes(), nil
 			},
 		}
+
 		out = &mockWriter{}
 		fs = mockFS{
 			true,
