@@ -22,8 +22,8 @@ type Log struct {
 	Message string
 }
 
-// New instantiates a log
-func New(msg string, cfg *Config) Log {
+// NewLog instantiates a log
+func NewLog(msg string, cfg *Config) Log {
 	return Log{
 		Author:  cfg.Author,
 		Email:   cfg.Email,
@@ -32,8 +32,8 @@ func New(msg string, cfg *Config) Log {
 	}
 }
 
-// LoadBeaconLog loads the beacon log from the specified file
-func LoadBeaconLog(logFileName string) []Log {
+// LoadLog loads the beacon log from the specified file
+func LoadLog(logFileName string) []Log {
 	var logs []Log
 
 	// Check if file exists
@@ -44,7 +44,6 @@ func LoadBeaconLog(logFileName string) []Log {
 
 	// read JSON file from disk
 	logFile, err := ioutil.ReadFile(logFileName)
-
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -53,7 +52,9 @@ func LoadBeaconLog(logFileName string) []Log {
 		log.Fatal(err)
 	}
 
-	// Make sure that we are FILO sorted
+	// Make sure that we are First-in-Last-out sorted
+	// TODO: should we be writing to the log file by prepending the log, rather than adding it to the end?
+	// This way the read of the file will automatically be in the right order, although we should sort anyway in case the data becomes corrupted?
 	sort.Sort(ByDate(logs))
 
 	return logs
@@ -74,8 +75,8 @@ func SaveNewLog(logFile string, data []Log) error {
 	return json.NewEncoder(file).Encode(data)
 }
 
-// ShowLog prints the number of beacon entries requested
-func ShowLog(logs []Log, count int) {
+// ReadLog prints the number of beacon entries requested
+func ReadLog(logs []Log, count int) {
 	if count > len(logs) || count < 0 {
 		count = len(logs)
 	}
@@ -88,10 +89,8 @@ func ShowLog(logs []Log, count int) {
 // String implements the stringer interface for the BeaconLog struct
 func (l Log) String() string {
 	buf := &bytes.Buffer{}
-	fmt.Fprintf(buf, "\n==========================================\n")
 	fmt.Fprintf(buf, "Date: %s\n", time.Unix(l.Date, 0).Format(time.Stamp))
 	fmt.Fprintf(buf, "Author: %s (%s)\n", l.Author, l.Email)
 	fmt.Fprintf(buf, "Message: %s\n", l.Message)
-	fmt.Fprintf(buf, "==========================================\n")
 	return buf.String()
 }

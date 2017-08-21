@@ -19,13 +19,7 @@ func TestString(t *testing.T) {
 				Author:  "John Henry",
 				Message: "I broke lots of things!",
 			},
-			`
-==========================================
-Date: Aug 12 16:27:21
-Author: John Henry (j@jh.com)
-Message: I broke lots of things!
-==========================================
-`,
+			"Date: Aug 12 16:27:21\nAuthor: John Henry (j@jh.com)\nMessage: I broke lots of things!\n",
 		},
 	}
 
