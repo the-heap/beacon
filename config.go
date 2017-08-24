@@ -25,43 +25,41 @@ type Config struct {
 	Email  string `json:"email"`
 }
 
-// LoadConfigFile reads the file provided and returns a Config.
-func LoadConfigFile(path string) (*Config, error) {
+// LoadConfig reads the file provided and returns a Config (if no errs)
+// If there is no config file this function will create one.
+func LoadConfig(path string) (*Config, error) {
+	configData := &Config{}
+
 	if path == "" {
 		return nil, ErrInvalidPath
 	}
 
+	// Check the beacon rc file exists; if not, create it.
 	_, err := os.Stat("./.beaconrc")
 	if err != nil {
 		InitConfig()
 	}
 
-	body, err := ioutil.ReadFile(path)
+	// Read the config file from disk
+	configFile, err := ioutil.ReadFile(path)
 	if err != nil {
-		return nil, Wrap("error reading file", err)
+		return nil, Wrap("Error reading the `.beaconrc` file.", err)
 	}
 
-	return LoadConfig(body)
-}
-
-// LoadConfig will parse a config []byte and confirm that the config
-// has the required fields
-func LoadConfig(config []byte) (*Config, error) {
-	cfg := &Config{}
-	err := json.Unmarshal(config, &cfg)
-	if err != nil {
+	if err := json.Unmarshal(configFile, &configData); err != nil {
 		return nil, Wrap("error parsing JSON", err)
 	}
 
-	if cfg.Author == "" {
+	if configData.Author == "" {
 		return nil, ErrAuthorRequired
 	}
 
-	if cfg.Email == "" {
+	if configData.Email == "" {
 		return nil, ErrEmailRequired
 	}
 
-	return cfg, nil
+	return configData, nil
+
 }
 
 // InitConfig is used to setup Beacon on first run
@@ -87,7 +85,7 @@ func InitConfig() {
 		}
 
 		// Welcome message
-		fmt.Println("\nHi, I'm Beacon! 🚨 — I'm here to help you and your team keep in touch about breaking changes.")
+		fmt.Println("\nHi, I'm Beacon! 🚨. I'm here to help you and your team keep in touch about breaking changes.")
 		fmt.Println("I set up a `beaconrc` file in your directory root with your Git information. You can change this whenever you need!")
 		fmt.Println("Thanks for using Beacon and have fun breaking stuff! 🔨")
 

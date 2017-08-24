@@ -22,31 +22,36 @@ import (
 	"os"
 )
 
+// `main` performs the following tasks:
+// - Load up the configuration file for beacon; if it doesn't exist, make it.
+// - Load the beacon log, if it doesn't exist; make it.
+// - Provide a switch statement for allowing different functionality based on command line arguments.
 func main() {
-	cfg, err := LoadConfigFile("./.beaconrc")
+	cfg, err := LoadConfig("./.beaconrc")
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// Load beacon_log and prepend newLog to the file
-	logs := LoadBeaconLog("./beacon_log.json")
+	beaconLog := LoadLog("./beacon_log.json")
 
-	// parse command line arguments to determine action
+	// Parse command line arguments to determine what Beacon action to take
 	if len(os.Args) >= 2 {
 		switch os.Args[1] {
 		case "add":
-			logs = append(logs, New(os.Args[2], cfg))
-			SaveNewLog("./beacon_log.json", logs)
+			beaconLog = append(beaconLog, NewLog(os.Args[2], cfg))
+			SaveNewLog("./beacon_log.json", beaconLog)
 			os.Exit(0)
 
 		case "all":
-			ShowLog(logs, -1)
+			ReadLog(beaconLog, -1)
 			os.Exit(0)
 
 		case "show":
 			CheckArgs([]string{"int"}, os.Args[2:], "show")
 
-			ShowLog(logs, 2)
+			// TODO: show variable amounts of reads
+			ReadLog(beaconLog, 2)
 			fmt.Println("")
 
 		case "init":
