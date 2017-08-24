@@ -25,7 +25,7 @@ type Config struct {
 	Email  string `json:"email"`
 }
 
-// LoadConfig reads the file provided and returns a Config.
+// LoadConfig reads the file provided and returns a Config (if no errs)
 // If there is no config file this function will create one.
 func LoadConfig(path string) (*Config, error) {
 	configData := &Config{}
@@ -46,7 +46,6 @@ func LoadConfig(path string) (*Config, error) {
 		return nil, Wrap("Error reading the `.beaconrc` file.", err)
 	}
 
-	// err := json.Unmarshal(configFile, &configData)
 	if err := json.Unmarshal(configFile, &configData); err != nil {
 		return nil, Wrap("error parsing JSON", err)
 	}
